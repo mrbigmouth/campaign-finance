@@ -66,13 +66,33 @@ function makeDataTable($area, data) {
 }
 
 //生成圓餅圖
-function makePie($area, values, labels) {
+function makePie($area, collection) {
   require(
-    ['lib/raphael-min'
+    ['underscore'
+    ,'lib/raphael-min'
     ,'lib/raphael-pie'
     ]
-  , function(raphael) {
-      console.log(raphael);
+  , function(_, raphael) {
+      var count  = {}
+        , values = []
+        , labels = []
+        , undefined
+        ;
+      collection.each(function(d) {
+        var code;
+        if (d.get('type') === 'income') {
+          code = d.get('code');
+          if (count[ code ] === undefined) {
+            count[ code ] = 1;
+          }
+          else {
+            count[ code ] += 1;
+          }
+        }
+      })
+      values = _.values(count);
+      labels = _.keys(count);
+      //console.log(values, labels);
       raphael( $area.get(0), 700, 700).pieChart(350, 350, 200, values, labels, "#fff");
     }
   );
@@ -111,8 +131,7 @@ define(function (require, exports, module) {
                   });
                   makePie(
                     view.$('div.pie')
-                  , pieValue
-                  , pieLabel
+                  , collection
                   )
                 });
                 //開始載入資料
