@@ -2,45 +2,25 @@
 requirejs.config(
   {'baseUrl' : ''
   ,'paths'   :
-    {'jquery'        : 'lib/jquery.min'
-    ,'bootstrap'     : 'lib/bootstrap'
-    ,'underscore'    : 'lib/underscore-min'
-    ,'backbone'      : 'lib/backbone-min'
-    ,'text'          : 'lib/requireText'
-    ,'datatables'    : 'lib/dataTable.min'
-    ,'datatable'     : 'lib/dataTable-bootstrap'
+    {'jquery'     : 'lib/jquery-2.1.1.min'
+    ,'bootstrap'  : 'lib/bootstrap'
+    ,'underscore' : 'lib/underscore-min'
+    ,'backbone'   : 'lib/backbone-min'
+    ,'text'       : 'lib/requireText'
+    ,'app'        : 'app'
     }
   ,'shim'    :
-    {'backbone'      :
-        {'deps'        : ['underscore']
+    {'backbone'   :
+        {'deps'    : ['underscore']
         }
-    ,'bootstrap'     :
-        {'deps'        : ['jquery']
-        }
-    ,'datatable'     :
-        {'deps'        : ['datatables', 'bootstrap']
+    ,'bootstrap'  :
+        {'deps'    : ['jquery']
+        ,'exports' : '$.fn.affix'
         }
     }
   ,'urlArgs' : "t=" + Date.now()
   }
 );
-
-//ajax讀取中時顯示載入圖?
-/*
-require(
-  ['jquery'
-  ,'bootstrap'
-  ]
-, function($) {
-    $(document).ajaxStart(function() {
-      $('#loading').modal('show');
-    });
-    $(document).ajaxStop(function() {
-      $('#loading').modal('hide');
-    });
-  }
-);
-*/
 
 //啟動app
 require(
