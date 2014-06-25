@@ -10,10 +10,7 @@ requirejs.config(
     ,'app'        : 'app'
     }
   ,'shim'    :
-    {'backbone'   :
-        {'deps'    : ['underscore']
-        }
-    ,'bootstrap'  :
+    {'bootstrap'  :
         {'deps'    : ['jquery']
         ,'exports' : '$.fn.affix'
         }
