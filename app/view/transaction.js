@@ -73,23 +73,22 @@ function makePie($area, collection) {
     ,'lib/raphael-pie'
     ]
   , function(_, raphael) {
-      var count  = {}
-        , values = []
+      var values = []
         , labels = []
+        , count
         , undefined
         ;
-      collection.each(function(d) {
-        var code;
-        if (d.get('type') === 'income') {
-          code = d.get('code');
-          if (count[ code ] === undefined) {
-            count[ code ] = 1;
-          }
-          else {
-            count[ code ] += 1;
-          }
-        }
-      })
+      count =
+        collection
+        .chain()
+        .filter(function(d) {
+          return (d.get('type') === 'income');
+        })
+        .countBy(function(d) {
+          return d.get('code');
+        })
+        .value()
+        ;
       values = _.values(count);
       labels = _.keys(count);
       //console.log(values, labels);
