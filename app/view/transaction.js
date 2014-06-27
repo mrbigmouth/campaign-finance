@@ -103,13 +103,12 @@ define(function (require, exports, module) {
     , view =
         require('backbone').View.extend(
           {'template'   : _.template(require('text!app/view/transaction.html'))
-          ,'render'     :
-              function($area) {
-                var view       = this
-                  , collection = view.collection
+          ,'initialize' :
+              function(data) {
+                //資料載入完成後生成table與pie
+                var collection = data.collection
+                  , view       = this
                   ;
-                view.$el.html('載入中...').appendTo( $area );
-                //資料載入完成後
                 collection.on('reset', function() {
                   view.$el.html('<table></table><div class="pie"></div>');
 
@@ -133,8 +132,13 @@ define(function (require, exports, module) {
                   , collection
                   )
                 });
-                //開始載入資料
-                collection.fetch( this.collection.url );
+              }
+          ,'render'     :
+              function($area) {
+                if (this.$('table').length < 1) {
+                  this.$el.html('載入中...');
+                }
+                this.$el.appendTo( $area );
                 return this;
               }
           }
@@ -149,7 +153,6 @@ define(function (require, exports, module) {
           , undefined
           ;
         collection = new collection();
-        collection.url = url;
         if (list[ url ] === undefined) {
           list[ url ] =
               new view(
@@ -161,6 +164,8 @@ define(function (require, exports, module) {
                 ,'className'  : '.transaction.transaction' + id
                 }
               ).render($area);
+              //開始載入資料
+              collection.fetch(url);
         }
         else {
           list[ url ].render($area);
